@@ -4,8 +4,7 @@
 #expertise {
   background-color: #000;
   min-height: 90vh;
-  padding: 2rem;
-  padding-top: 6rem;
+  padding: 6rem 1.5rem 4rem; /* top, horizontal, bottom */
   text-align: center;
 }
 
@@ -13,7 +12,7 @@
    Header
 ========================= */
 .expertise-header h1 {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: white;
@@ -28,8 +27,9 @@
 .expertise-header p {
   color: white;
   font-size: 1rem;
-  max-width: 40rem;
+  max-width: 90%; /* more responsive on small screens */
   margin: 0 auto;
+  padding: 0 0.5rem; /* mobile side padding */
 }
 
 /* =========================
@@ -37,12 +37,11 @@
 ========================= */
 .skills-grid {
   display: flex;
-  justify-content: space-between;
-  gap: 0.8rem;
+  flex-wrap: wrap; /* allow wrapping on small screens */
+  justify-content: center; /* center cards on mobile */
+  gap: 1rem;
   margin-top: 2.5rem;
-  flex-wrap: nowrap;
-  padding: 3rem 4rem;
-  padding-bottom: 6rem;
+  padding: 3rem 1rem 6rem; /* mobile-friendly padding */
 }
 
 /* =========================
@@ -50,14 +49,13 @@
 ========================= */
 .skill-card {
   background-color: #111;
-  padding: 1.2rem;
+  padding: 2rem 1rem 1.5rem; /* more top padding for icon */
   border-radius: 12px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #222;
-  padding-top: 3rem;
-  flex: 1;
-  max-width: 22%;
+  flex: 1 1 250px; /* allows responsiveness */
+  max-width: 300px;
 }
 
 .skill-card:hover {
@@ -72,19 +70,19 @@
    ICON SIZE FIX (IMPORTANT)
 ========================= */
 .svg-wrapper {
-  width: 60px;      /* consistent size */
+  width: 60px;
   height: 60px;
   margin: 0 auto 1rem;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;  /* prevents oversized mask */
+  overflow: hidden;
 }
 
 .svg-wrapper::before {
   content: "";
-  width: 80%;        /* makes icon smaller inside wrapper */
+  width: 80%;
   height: 80%;
   background: linear-gradient(90deg, #ec4899, #f472b6, #fbb6ce);
 
@@ -114,4 +112,32 @@
   color: #d1d5db;
   font-size: 0.85rem;
   line-height: 1.4;
+  padding: 0 0.5rem; /* side padding for mobile */
+}
+
+/* =========================
+   Responsive Adjustments
+========================= */
+@media screen and (min-width: 640px) {
+  #expertise {
+    padding: 6rem 2rem 4rem;
+  }
+
+  .skills-grid {
+    padding: 3rem 2rem 6rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .expertise-header h1 {
+    font-size: 3.5rem;
+  }
+
+  .skill-card {
+    max-width: 22%;
+  }
+
+  .skills-grid {
+    justify-content: space-between;
+  }
 }

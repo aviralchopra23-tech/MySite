@@ -4,7 +4,6 @@ const Hero = () => {
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Typewriter state
   const fullText = "Hey there, I'm Aviral";
   const [typedText, setTypedText] = useState("");
 
@@ -14,7 +13,7 @@ const Hero = () => {
       setTypedText(fullText.slice(0, index + 1));
       index++;
       if (index === fullText.length) clearInterval(typeInterval);
-    }, 150);
+    }, 120);
 
     return () => clearInterval(typeInterval);
   }, []);
@@ -26,20 +25,22 @@ const Hero = () => {
 
     const ctx = canvas.getContext("2d");
 
-    // ✅ IMPORTANT: use HERO size, not window size
     let width = (canvas.width = section.clientWidth);
     let height = (canvas.height = section.clientHeight);
 
     const particlesArray = [];
     const colors = ["#FF6B6B", "#FFD93D", "#6BCB77", "#4D96FF"];
 
+    // ✅ Reduce particles on mobile
+    const particleCount = window.innerWidth < 768 ? 60 : 120;
+
     class Particle {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 4 + 1;
-        this.speedX = Math.random() * 1.5 - 0.75;
-        this.speedY = Math.random() * 1.5 - 0.75;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1.2 - 0.6;
+        this.speedY = Math.random() * 1.2 - 0.6;
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
       update() {
@@ -61,7 +62,7 @@ const Hero = () => {
 
     function init() {
       particlesArray.length = 0;
-      for (let i = 0; i < 120; i++) {
+      for (let i = 0; i < particleCount; i++) {
         particlesArray.push(new Particle());
       }
     }
@@ -70,17 +71,14 @@ const Hero = () => {
     let animationId;
     function animate() {
       ctx.clearRect(0, 0, width, height);
-
       particlesArray.forEach((p) => {
         p.update();
         p.draw();
       });
-
       animationId = requestAnimationFrame(animate);
     }
     animate();
 
-    // ✅ Resize observer keeps canvas matching hero (better than window resize)
     const resize = () => {
       width = canvas.width = section.clientWidth;
       height = canvas.height = section.clientHeight;
@@ -89,7 +87,6 @@ const Hero = () => {
 
     const ro = new ResizeObserver(resize);
     ro.observe(section);
-
     window.addEventListener("resize", resize);
 
     return () => {
@@ -102,23 +99,18 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-black"
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Google Fonts Import */}
-      <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
-
-      {/* ✅ Particles canvas stays ONLY inside hero */}
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full block pointer-events-none"
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+      {/* Content */}
+      <div className="relative z-10 text-center px-6 sm:px-8 md:px-12 max-w-5xl">
         <h1
-          className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight mb-4 tracking-tight text-white drop-shadow-2xl"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold leading-tight mb-4 tracking-tight text-white drop-shadow-2xl"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {typedText}
@@ -126,7 +118,7 @@ const Hero = () => {
         </h1>
 
         <p
-          className="mt-4 text-2xl md:text-4xl lg:text-5xl font-semibold text-indigo-300 tracking-wide drop-shadow-lg"
+          className="mt-4 text-lg sm:text-xl md:text-3xl lg:text-4xl font-semibold text-indigo-300 tracking-wide drop-shadow-lg"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           Creative Developer & Designer
@@ -141,6 +133,7 @@ const Hero = () => {
           animation: blink 0.8s steps(1) infinite;
           margin-left: 2px;
         }
+
         @keyframes blink {
           0%, 50%, 100% { opacity: 1; }
           25%, 75% { opacity: 0; }

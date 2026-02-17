@@ -14,6 +14,7 @@ const Navbar = () => {
 
   const [activeLink, setActiveLink] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleScroll = (target) => {
     gsap.to(window, {
@@ -21,7 +22,9 @@ const Navbar = () => {
       scrollTo: target,
       ease: "power3.inOut",
     });
+
     setActiveLink(target);
+    setMenuOpen(false); // close mobile menu after click
   };
 
   useEffect(() => {
@@ -61,46 +64,21 @@ const Navbar = () => {
         width: "100%",
         zIndex: 1000,
         transition: "all 0.5s",
-        background: scrolled ? "rgba(255,255,255,0.7)" : "transparent",
+        background: scrolled ? "rgba(255,255,255,0.8)" : "transparent",
         backdropFilter: scrolled ? "blur(14px)" : "none",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.06)" : "none",
       }}
     >
-      <div
-        className="navbar-inner"
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "22px 64px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo now scrolls to About */}
+      <div className="navbar-inner">
         <div
           className="logo-text"
-          style={{
-            fontSize: "2rem",
-            fontWeight: 800,
-            cursor: "pointer",
-            letterSpacing: "-0.5px",
-          }}
           onClick={() => handleScroll("#about")}
         >
           AVIRAL
         </div>
 
-        <ul
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "42px",
-            listStyle: "none",
-            margin: 0,
-            padding: 0,
-          }}
-        >
+        {/* Desktop Menu */}
+        <ul className="nav-links">
           {navLinks.map((link) => (
             <li key={link.name}>
               <span
@@ -114,63 +92,139 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
+
+        {/* Hamburger */}
+        <div
+          className={`hamburger ${menuOpen ? "open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
 
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${menuOpen ? "show" : ""}`}>
+        {navLinks.map((link) => (
+          <span
+            key={link.name}
+            onClick={() => handleScroll(link.target)}
+            className={`mobile-link ${
+              activeLink === link.target ? "active" : ""
+            }`}
+          >
+            {link.name}
+          </span>
+        ))}
+      </div>
 
-          .logo-text {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(270deg, #f43f5e, #facc15, #22c55e, #3b82f6);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 8s ease infinite;
+      <style>{`
+        .navbar-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 20px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .logo-text {
+          font-size: 1.8rem;
+          font-weight: 800;
+          cursor: pointer;
+          font-family: 'Poppins', sans-serif;
+          background: linear-gradient(270deg, #f43f5e, #facc15, #22c55e, #3b82f6);
+          background-size: 400% 400%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientMove 8s ease infinite;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 36px;
+          list-style: none;
+        }
+
+        .nav-link {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600;
+          cursor: pointer;
+          color: #374151;
+          position: relative;
+          padding: 8px 10px;
+          transition: 0.3s ease;
+        }
+
+        .nav-link::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: -2px;
+          transform: translateX(-50%);
+          width: 0%;
+          height: 2px;
+          background: linear-gradient(270deg, #f43f5e, #facc15, #22c55e, #3b82f6);
+          transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+          width: 60%;
+        }
+
+        .hamburger {
+          display: none;
+          flex-direction: column;
+          gap: 5px;
+          cursor: pointer;
+        }
+
+        .hamburger span {
+          width: 25px;
+          height: 3px;
+          background: #111;
+          border-radius: 2px;
+          transition: 0.3s;
+        }
+
+        .mobile-menu {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          background: white;
+          padding: 20px 0;
+          gap: 20px;
+        }
+
+        .mobile-link {
+          font-weight: 600;
+          cursor: pointer;
+          font-family: 'Poppins', sans-serif;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .nav-links {
+            display: none;
           }
 
-          .nav-link {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.05rem;
-            cursor: pointer;
-            color: #374151;
-            position: relative;
-            padding: 10px 14px;
-            transition: all 0.3s ease;
-            user-select: none;
+          .hamburger {
+            display: flex;
           }
 
-          .nav-link::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: -2px;
-            transform: translateX(-50%);
-            width: 0%;
-            height: 2px;
-            border-radius: 9999px;
-            background: linear-gradient(270deg, #f43f5e, #facc15, #22c55e, #3b82f6);
-            transition: width 0.35s ease;
+          .mobile-menu.show {
+            display: flex;
           }
+        }
 
-          .nav-link:hover::after,
-          .nav-link.active::after {
-            width: 60%;
-          }
-
-          .nav-link:hover,
-          .nav-link.active {
-            color: #111827;
-          }
-
-          @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
+        @keyframes gradientMove {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
     </nav>
   );
 };

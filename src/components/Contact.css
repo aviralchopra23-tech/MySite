@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   padding: 100px 60px;
+  box-sizing: border-box; /* ensure padding doesn't overflow */
 }
 
 /* CONTAINER */
@@ -28,6 +29,7 @@
   grid-template-columns: 1.2fr 0.8fr;
   gap: 110px;
   align-items: start;
+  box-sizing: border-box;
 }
 
 /* LEFT */
@@ -40,7 +42,6 @@
   margin: 0;
   margin-top: 8rem;
 
-  /* Rainbow gradient (keep as you like) */
   background: linear-gradient(
     90deg,
     #ff004c,
@@ -60,6 +61,7 @@
   margin-top: 20px;
   color: var(--muted);
   font-weight: 400;
+  max-width: 95%;
 }
 
 /* RIGHT – PROFESSIONAL */
@@ -103,7 +105,6 @@
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Minimal professional hover */
 .contact-link:hover {
   color: var(--hover);
   transform: translateX(2px);
@@ -119,18 +120,48 @@
   color: var(--text);
 }
 
-/* RESPONSIVE */
+/* ======================
+   RESPONSIVE
+====================== */
 @media (max-width: 900px) {
-  .contact-container {
-    grid-template-columns: 1fr;
+  .contact-section {
+    flex-direction: column;
+    padding: 80px 20px;
     gap: 50px;
   }
 
-  .contact-section {
-    padding: 80px 25px;
+  .contact-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-left,
+  .contact-right {
+    width: 100%;
   }
 
   .contact-right {
     padding-top: 0;
+  }
+
+  .contact-title {
+    text-align: center;
+    margin-top: 4rem;
+    font-size: clamp(36px, 7vw, 64px);
+  }
+
+  .contact-subtitle {
+    text-align: center;
+    max-width: 100%;
+    padding: 0 10px; /* add side padding for mobile */
+  }
+
+  .contact-item {
+    padding: 14px 0;
+  }
+
+  .contact-link,
+  .contact-location {
+    font-size: 16px;
   }
 }
