@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Projects.css";
 
 const Projects = () => {
@@ -57,10 +58,10 @@ const Projects = () => {
         <div className="timeline-item right" data-animate>
           <div className="timeline-year">2026</div>
           <div className="timeline-content">
-            <h2 className="project-title">SecureOps Manager</h2>
+            <h2 className="project-title">Security Workforce Management Platform</h2>
             <p className="project-desc">
-              SecureOps Manager is a robust security management platform designed to streamline operations across multiple locations. It supports three roles—Guard, Supervisor, and Owner—each with tailored dashboards and permissions. Owners can manage locations, assign personnel, and broadcast announcements. Supervisors can create schedules, monitor shifts, and communicate with guards. Guards can track working hours, view assigned shifts, and submit pay data. The platform ensures efficient workforce management, transparent communication, and real-time reporting, optimizing security operations across all sites.{" "}
-              <a href="#" className="project-link" target="_blank" rel="noopener">Learn More →</a>
+              Security Workforce Management Platform is a robust security management platform designed to streamline operations across multiple locations. It supports three roles—Guard, Supervisor, and Owner—each with tailored dashboards and permissions. Owners can manage locations, assign personnel, and broadcast announcements. Supervisors can create schedules, monitor shifts, and communicate with guards. Guards can track working hours, view assigned shifts, and submit pay data. The platform ensures efficient workforce management, transparent communication, and real-time reporting, optimizing security operations across all sites.{" "}
+              <Link to="/projects/security-workforce-management" className="project-link">Learn More →</Link>
             </p>
           </div>
         </div>
